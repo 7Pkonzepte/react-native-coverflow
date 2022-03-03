@@ -69,7 +69,7 @@ class Coverflow extends Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     const { scrollX, sensitivity } = this.state;
     this.scrollListener = scrollX.addListener(this.onScroll);
 
@@ -104,6 +104,7 @@ class Coverflow extends Component {
           Animated.decay(scrollX, {
             velocity,
             deceleration,
+            useNativeDriver: true,
           }).start(({ finished }) => {
             // Only snap to finish if the animation was completed gracefully
             if (finished) {
@@ -117,7 +118,7 @@ class Coverflow extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     // Check if the children property changes on addition / removal
     const sensitivity = convertSensitivity(nextProps.sensitivity);
     const selection = clamp(this.state.selection, 0, Children.count(nextProps.children) - 1);
@@ -180,6 +181,7 @@ class Coverflow extends Component {
 
       Animated.spring(scrollX, {
         toValue: finalPos,
+        useNativeDriver: true,
       }).start();
     }
   }
